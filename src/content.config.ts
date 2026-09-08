@@ -1,0 +1,15 @@
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
+
+const lessons = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/lessons' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number(),
+    // Путь к картинке-иллюстрации (опционально)
+    image: z.string().optional(),
+  }),
+});
+
+export const collections = { lessons };

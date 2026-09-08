@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = '1С для новичков' } = Astro.props;
+
+const lessons = (await getCollection('lessons')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="logo">1С для новичков</a>
+      <nav class="top-nav">
+        <a href="/" class={currentPath === '' ? 'active' : ''}>Главная</a>
+        <a href="/lessons/" class={currentPath === '/lessons' ? 'active' : ''}>Все уроки</a>
+      </nav>
+    </header>
+
+    <div class="page">
+      <aside class="sidebar">
+        <h2>Уроки</h2>
+        <ol>
+          {
+            lessons.map((lesson) => {
+              const href = `/lessons/${lesson.id}/`;
+              return (
+                <li>
+                  <a href={href} class={currentPath === href.replace(/\/$/, '') ? 'active' : ''}>
+                    {lesson.data.title}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ol>
+      </aside>
+
+      <main class="content">
+        <slot />
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <p>Обучающий сайт по разработке на 1С · сделано с ♥ на Astro</p>
+    </footer>
+  </body>
+</html>
