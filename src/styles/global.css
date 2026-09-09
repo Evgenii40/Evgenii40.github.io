@@ -8,6 +8,20 @@
   --accent-soft: #fdeee9;
   --code-bg: #0f172a;
   --sidebar-width: 280px;
+  color-scheme: light;
+}
+
+/* ---------- Тёмная тема ---------- */
+html[data-theme='dark'] {
+  --bg: #0d1117;
+  --bg-soft: #161b22;
+  --border: #2d333b;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #ff7a54;
+  --accent-soft: #2e1d17;
+  --code-bg: #0a0e1a;
+  color-scheme: dark;
 }
 
 * {
@@ -47,16 +61,99 @@ body {
   letter-spacing: 0.01em;
 }
 
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
 .top-nav a {
-  margin-left: 1.25rem;
   text-decoration: none;
   color: var(--text-muted);
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .top-nav a.active,
 .top-nav a:hover {
   color: var(--accent);
+}
+
+/* ---------- Переключатель темы ---------- */
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  flex-shrink: 0; /* не сжимаемся и не налезаем на ссылки */
+}
+
+.theme-switch:hover {
+  color: var(--accent);
+}
+
+.theme-switch .track {
+  position: relative;
+  width: 2.7rem;
+  height: 1.45rem;
+  border-radius: 999px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.theme-switch .knob {
+  position: absolute;
+  top: 50%;
+  left: 0.16rem;
+  transform: translateY(-50%);
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  line-height: 1;
+  transition: left 0.15s;
+}
+
+/* показываем иконку темы, на которую можно переключиться */
+.theme-switch .icon-sun {
+  display: none;
+}
+
+html[data-theme='dark'] .theme-switch .icon-sun {
+  display: inline;
+}
+
+html[data-theme='dark'] .theme-switch .icon-moon {
+  display: none;
+}
+
+html[data-theme='dark'] .theme-switch .track {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+html[data-theme='dark'] .theme-switch .knob {
+  left: calc(100% - 1.26rem);
+}
+
+/* на узких экранах подпись скрываем, остаётся только ползунок */
+@media (max-width: 800px) {
+  .theme-switch .switch-label {
+    display: none;
+  }
 }
 
 /* ---------- Каркас страницы ---------- */
@@ -84,11 +181,11 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-  counter-reset: lesson;
+  counter-reset: cheat;
 }
 
 .sidebar li {
-  counter-increment: lesson;
+  counter-increment: cheat;
   margin: 0.15rem 0;
 }
 
@@ -102,7 +199,7 @@ body {
 }
 
 .sidebar a::before {
-  content: counter(lesson) '. ';
+  content: counter(cheat) '. ';
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
 }
@@ -174,13 +271,13 @@ body {
   margin: 0.25rem 0;
 }
 
-.lesson-meta {
+.cheat-meta {
   color: var(--text-muted);
   font-size: 0.95rem;
   margin-top: -0.5rem;
 }
 
-.lesson-nav {
+.cheat-nav {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -189,20 +286,20 @@ body {
   border-top: 1px solid var(--border);
 }
 
-.lesson-nav a {
+.cheat-nav a {
   text-decoration: none;
   color: var(--accent);
   font-weight: 600;
 }
 
-/* ---------- Карточки уроков (главная) ---------- */
-.lesson-grid {
+/* ---------- Карточки шпаргалок ---------- */
+.cheat-grid {
   display: grid;
   gap: 1rem;
   margin-top: 1.5rem;
 }
 
-.lesson-card {
+.cheat-card {
   display: block;
   text-decoration: none;
   color: inherit;
@@ -212,25 +309,32 @@ body {
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.lesson-card:hover {
+.cheat-card:hover {
   border-color: var(--accent);
   box-shadow: 0 2px 12px rgba(210, 75, 48, 0.12);
 }
 
-.lesson-card .num {
-  color: var(--accent);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.lesson-card h3 {
+.cheat-card h3 {
   margin: 0.15rem 0 0.3rem;
 }
 
-.lesson-card p {
+.cheat-card p {
   margin: 0;
   color: var(--text-muted);
   font-size: 0.93rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  margin-right: 0.5rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 /* ---------- Подвал ---------- */

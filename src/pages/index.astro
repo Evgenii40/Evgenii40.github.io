@@ -2,40 +2,26 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const lessons = (await getCollection('lessons')).sort(
+const cheats = (await getCollection('cheats')).sort(
   (a, b) => a.data.order - b.data.order
 );
 ---
 
-<BaseLayout title="1С для новичков — учимся программировать с нуля">
-  <h1>Программирование 1С с нуля</h1>
-  <p class="lesson-meta">
-    Пошаговый курс для тех, кто никогда не писал код, но хочет освоить
-    разработку на платформе 1С:Предприятие.
+<BaseLayout title="Шпаргалки по 1С — практические инструкции">
+  <h1>Шпаргалки по работе с 1С</h1>
+  <p class="cheat-meta">
+    Короткие практические инструкции: интеграции, настройка, администрирование
+    и приёмы работы с платформой 1С:Предприятие. Без теории и обучающих курсов —
+    только то, что нужно, чтобы быстро сделать задачу.
   </p>
 
-  <p>
-    Курс построен по принципу «от простого к сложному»: сначала вы поймёте,
-    что такое платформа 1С и конфигуратор, затем научитесь читать и писать
-    код на встроенном языке 1С, а в конце соберёте своё первое небольшое
-    приложение.
-  </p>
-
-  <blockquote>
-    <p>
-      <strong>Как учиться.</strong> Читайте уроки по порядку и обязательно
-      повторяйте всё в 1С на своём компьютере. Программирование осваивается
-      только руками, а не глазами.
-    </p>
-  </blockquote>
-
-  <div class="lesson-grid">
+  <div class="cheat-grid">
     {
-      lessons.map((lesson) => (
-        <a class="lesson-card" href={`/lessons/${lesson.id}/`}>
-          <span class="num">Урок {lesson.data.order}</span>
-          <h3>{lesson.data.title}</h3>
-          <p>{lesson.data.description}</p>
+      cheats.map((cheat) => (
+        <a class="cheat-card" href={`/cheats/${cheat.id}/`}>
+          {cheat.data.tag && <span class="tag">{cheat.data.tag}</span>}
+          <h3>{cheat.data.title}</h3>
+          <p>{cheat.data.description}</p>
         </a>
       ))
     }

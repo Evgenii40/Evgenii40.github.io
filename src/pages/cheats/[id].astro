@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const cheats = (await getCollection('cheats')).sort(
+    (a, b) => a.data.order - b.data.order
+  );
+  return cheats.map((cheat, i) => ({
+    params: { id: cheat.id },
+    props: {
+      cheat,
+      prev: i > 0 ? cheats[i - 1] : undefined,
+      next: i < cheats.length - 1 ? cheats[i + 1] : undefined,
+    },
+  }));
+}
+
+const { cheat, prev, next } = Astro.props;
+const { Content } = await render(cheat);
+---
+
+<BaseLayout title={`${cheat.data.title} — Шпаргалки по 1С`}>
+  <article>
+    <h1>{cheat.data.title}</h1>
+    <p class="cheat-meta">
+      {cheat.data.tag && <span class="tag">{cheat.data.tag}</span>}
+      {cheat.data.description}
+    </p>
+
+    <Content />
+
+    <nav class="cheat-nav">
+      {
+        prev ? (
+          <a href={`/cheats/${prev.id}/`}>← {prev.data.title}</a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next ? (
+          <a href={`/cheats/${next.id}/`}>{next.data.title} →</a>
+        ) : (
+          <span />
+        )
+      }
+    </nav>
+  </article>
+</BaseLayout>

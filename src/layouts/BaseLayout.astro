@@ -6,9 +6,9 @@ interface Props {
   title?: string;
 }
 
-const { title = '1С для новичков' } = Astro.props;
+const { title = 'Шпаргалки по 1С' } = Astro.props;
 
-const lessons = (await getCollection('lessons')).sort(
+const cheats = (await getCollection('cheats')).sort(
   (a, b) => a.data.order - b.data.order
 );
 const currentPath = Astro.url.pathname.replace(/\/$/, '');
@@ -21,27 +21,49 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script is:inline>
+      // применяем тему до первой отрисовки, чтобы не мигало
+      const saved =
+        localStorage.getItem('theme') ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = saved;
+    </script>
   </head>
   <body>
     <header class="site-header">
-      <a href="/" class="logo">1С для новичков</a>
+      <a href="/" class="logo">Шпаргалки по 1С</a>
       <nav class="top-nav">
         <a href="/" class={currentPath === '' ? 'active' : ''}>Главная</a>
-        <a href="/lessons/" class={currentPath === '/lessons' ? 'active' : ''}>Все уроки</a>
+        <a href="/cheats/" class={currentPath === '/cheats' ? 'active' : ''}>Все шпаргалки</a>
+        <button
+          class="theme-switch"
+          id="theme-toggle"
+          role="switch"
+          aria-label="Тёмная тема"
+          title="Переключить тему"
+        >
+          <span class="track">
+            <span class="knob">
+              <span class="icon-moon">🌙</span>
+              <span class="icon-sun">☀️</span>
+            </span>
+          </span>
+          <span class="switch-label">Тёмная тема</span>
+        </button>
       </nav>
     </header>
 
     <div class="page">
       <aside class="sidebar">
-        <h2>Уроки</h2>
+        <h2>Шпаргалки</h2>
         <ol>
           {
-            lessons.map((lesson) => {
-              const href = `/lessons/${lesson.id}/`;
+            cheats.map((cheat) => {
+              const href = `/cheats/${cheat.id}/`;
               return (
                 <li>
                   <a href={href} class={currentPath === href.replace(/\/$/, '') ? 'active' : ''}>
-                    {lesson.data.title}
+                    {cheat.data.title}
                   </a>
                 </li>
               );
@@ -56,7 +78,24 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     </div>
 
     <footer class="site-footer">
-      <p>Обучающий сайт по разработке на 1С · сделано с ♥ на Astro</p>
+      <p>Шпаргалки по работе с 1С · сделано с ♥ на Astro</p>
     </footer>
+
+    <script is:inline>
+      const toggle = document.getElementById('theme-toggle');
+      const syncState = () =>
+        toggle?.setAttribute(
+          'aria-checked',
+          String(document.documentElement.dataset.theme === 'dark')
+        );
+      syncState();
+      toggle?.addEventListener('click', () => {
+        const next =
+          document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('theme', next);
+        syncState();
+      });
+    </script>
   </body>
 </html>

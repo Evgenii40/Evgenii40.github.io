@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const cheats = (await getCollection('cheats')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<BaseLayout title="Все шпаргалки — Шпаргалки по 1С">
+  <h1>Все шпаргалки</h1>
+  <p class="cheat-meta">Короткие практические инструкции по работе с 1С — без теории, сразу к делу.</p>
+
+  <div class="cheat-grid">
+    {
+      cheats.map((cheat) => (
+        <a class="cheat-card" href={`/cheats/${cheat.id}/`}>
+          {cheat.data.tag && <span class="tag">{cheat.data.tag}</span>}
+          <h3>{cheat.data.title}</h3>
+          <p>{cheat.data.description}</p>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>
