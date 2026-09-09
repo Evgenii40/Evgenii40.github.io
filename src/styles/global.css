@@ -242,6 +242,7 @@ html[data-theme='dark'] .theme-switch .knob {
 }
 
 .content pre {
+  position: relative;
   background: var(--code-bg);
   color: #e2e8f0;
   padding: 1rem 1.25rem;
@@ -249,6 +250,31 @@ html[data-theme='dark'] .theme-switch .knob {
   overflow-x: auto;
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: 1px solid rgba(226, 232, 240, 0.25);
+  background: rgba(15, 23, 42, 0.85);
+  color: #94a3b8;
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.content pre:hover .copy-btn,
+.copy-btn:focus-visible {
+  opacity: 1;
+}
+
+.copy-btn:hover {
+  color: #e2e8f0;
 }
 
 .content code:not(pre code) {
@@ -288,6 +314,38 @@ html[data-theme='dark'] .theme-switch .knob {
 
 .cheat-nav a {
   text-decoration: none;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---------- Фильтр по тегам ---------- */
+.cheat-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.cheat-filter button {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.cheat-filter button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.cheat-filter button.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
   color: var(--accent);
   font-weight: 600;
 }

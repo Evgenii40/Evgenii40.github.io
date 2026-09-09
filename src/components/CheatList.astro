@@ -1,0 +1,50 @@
+---
+interface CheatData {
+  id: string;
+  data: {
+    title: string;
+    description: string;
+    tag?: string;
+  };
+}
+
+interface Props {
+  cheats: CheatData[];
+}
+
+const { cheats } = Astro.props;
+const tags = [...new Set(cheats.map((c) => c.data.tag).filter(Boolean))];
+---
+
+<div class="cheat-filter" id="cheat-filter">
+  <button data-tag="" class="active">Все</button>
+  {tags.map((tag) => <button data-tag={tag}>{tag}</button>)}
+</div>
+
+<div class="cheat-grid">
+  {
+    cheats.map((cheat) => (
+      <a class="cheat-card" data-tag={cheat.data.tag ?? ''} href={`/cheats/${cheat.id}/`}>
+        {cheat.data.tag && <span class="tag">{cheat.data.tag}</span>}
+        <h3>{cheat.data.title}</h3>
+        <p>{cheat.data.description}</p>
+      </a>
+    ))
+  }
+</div>
+
+<script>
+  const bar = document.getElementById('cheat-filter');
+  const cards = document.querySelectorAll<HTMLElement>('.cheat-card');
+
+  bar?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-tag]');
+    if (!btn) return;
+
+    bar.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === btn));
+    const tag = btn.dataset.tag ?? '';
+    cards.forEach((card) => {
+      card.style.display = tag === '' || card.dataset.tag === tag ? '' : 'none';
+    });
+  });
+</script>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CheatList from '../components/CheatList.astro';
 import { getCollection } from 'astro:content';
 
 const cheats = (await getCollection('cheats')).sort(
@@ -15,15 +16,5 @@ const cheats = (await getCollection('cheats')).sort(
     только то, что нужно, чтобы быстро сделать задачу.
   </p>
 
-  <div class="cheat-grid">
-    {
-      cheats.map((cheat) => (
-        <a class="cheat-card" href={`/cheats/${cheat.id}/`}>
-          {cheat.data.tag && <span class="tag">{cheat.data.tag}</span>}
-          <h3>{cheat.data.title}</h3>
-          <p>{cheat.data.description}</p>
-        </a>
-      ))
-    }
-  </div>
+  <CheatList cheats={cheats} />
 </BaseLayout>
