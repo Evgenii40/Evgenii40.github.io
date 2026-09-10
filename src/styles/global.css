@@ -48,10 +48,12 @@ body {
   flex-wrap: wrap;
   gap: 1rem;
   padding: 0.9rem 2rem;
-  border-bottom: 1px solid var(--border);
+  /* выделенная шапка: тонированный фон + акцентная линия снизу + лёгкая тень */
+  background: var(--bg-soft);
+  border-bottom: 3px solid var(--accent);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
-  background: var(--bg);
   z-index: 10;
 }
 
@@ -173,24 +175,29 @@ html[data-theme='dark'] .theme-switch .knob {
   left: 328px;
   top: 50%;
   transform: translateY(-50%);
-  width: min(420px, max(140px, calc(100vw - 780px)));
+  width: min(560px, max(160px, calc(100vw - 920px)));
 }
 
 .site-search input {
   width: 100%;
   font: inherit;
-  font-size: 0.92rem;
-  padding: 0.45rem 0.9rem;
-  border: 1px solid var(--border);
+  font-size: 0.98rem;
+  padding: 0.6rem 1.1rem;
+  border: 1.5px solid var(--text-muted);
   border-radius: 10px;
   background: var(--bg);
   color: var(--text);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.site-search input::placeholder {
+  color: var(--text-muted);
 }
 
 .site-search input:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .search-results {
