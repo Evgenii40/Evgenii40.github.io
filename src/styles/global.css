@@ -62,46 +62,27 @@ body {
   align-items: center;
   gap: 0.6rem;
   font-weight: 700;
-  font-size: 1.75rem;
+  font-size: 1.9rem;
   letter-spacing: 0.01em;
   color: var(--accent);
   text-decoration: none;
-  /* фон плашки убран — остаётся только рамка вокруг названия */
+  /* плашка и фон убраны — остаётся только название */
   padding: 0.35rem 0.8rem;
   margin-left: -0.8rem;
   border-radius: 10px;
 }
 
-/* название: рамка тёмно-серая + контур каждой буквы */
+/* название: без плашки и фона, только утопленные буквы */
 .logo-text {
-  border: 1px solid var(--text);
-  border-radius: 8px;
-  padding: 0.05rem 0.55rem;
-  background: color-mix(in srgb, var(--bg-soft) 88%, var(--text) 12%);
-  box-shadow:
-    0 3px 0 color-mix(in srgb, var(--text) 45%, var(--bg-soft)),
-    0 5px 9px rgba(0, 0, 0, 0.16);
   text-shadow:
     0 2px 0 color-mix(in srgb, #fff 55%, transparent),
-    0 -1px 1px color-mix(in srgb, #000 22%, transparent),
-    -1px 0 var(--text),
-    1px 0 var(--text),
-    0 -1px var(--text),
-    0 1px var(--text);
+    0 -1px 1px color-mix(in srgb, #000 22%, transparent);
 }
 
 html[data-theme='dark'] .logo-text {
-  background: color-mix(in srgb, var(--bg-soft) 82%, #000 18%);
-  box-shadow:
-    0 3px 0 #000,
-    0 5px 9px rgba(0, 0, 0, 0.5);
   text-shadow:
     0 2px 0 color-mix(in srgb, #fff 20%, transparent),
-    0 -1px 1px rgba(0, 0, 0, 0.5),
-    -1px 0 #000,
-    1px 0 #000,
-    0 -1px #000,
-    0 1px #000;
+    0 -1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .logo-mark {
@@ -113,10 +94,6 @@ html[data-theme='dark'] .logo-text {
   filter:
     drop-shadow(0 -1px 1.5px rgba(0, 0, 0, 0.6))
     drop-shadow(0 1px 1px rgba(255, 255, 255, 0.22));
-}
-
-html[data-theme='dark'] .logo-mark {
-  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--text) 75%, transparent);
 }
 
 /* клавиша «нажимается»: слегка утапливается при наведении и клике */
@@ -486,8 +463,8 @@ html:not([data-theme='dark']) .sidebar a.active {
   background: var(--bg);
   color: var(--text-muted);
   font: inherit;
-  font-size: 0.85rem;
-  padding: 0.3rem 0.9rem;
+  font-size: 1rem;
+  padding: 0.4rem 1.05rem;
   border-radius: 999px;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
