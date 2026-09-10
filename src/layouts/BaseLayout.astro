@@ -32,7 +32,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
   </head>
   <body>
     <header class="site-header">
-      <a href="/" class="logo">
+      <a href="/" class="logo" title="На главную">
         <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
           <defs>
             <linearGradient id="logo-grad" x1="0" y1="0" x2="1" y2="1">
@@ -40,9 +40,15 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
               <stop offset="1" stop-color="#c2482f"/>
             </linearGradient>
           </defs>
-          <rect width="48" height="48" rx="11" fill="url(#logo-grad)"/>
-          <path d="M17.2 13.5v21" fill="none" stroke="#fff" stroke-width="4.4" stroke-linecap="round"/>
-          <path d="M33.5 13.5L20.8 24l12.7 10.5" fill="none" stroke="#fff" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- корпус клавиши -->
+          <rect x="4" y="8" width="40" height="34" rx="7" fill="#7a2413" opacity="0.9"/>
+          <!-- верхняя грань клавиши с градиентом и тёмной обводкой -->
+          <rect x="4" y="5" width="40" height="32" rx="7" fill="url(#logo-grad)" stroke="#5e1c0e" stroke-width="2.4"/>
+          <!-- буква К с тонкой тёмной обводкой штрихов -->
+          <path d="M18.2 12.5v17" fill="none" stroke="#5e1c0e" stroke-width="4.9" stroke-linecap="round"/>
+          <path d="M31.8 12.5L21 21l10.8 8.5" fill="none" stroke="#5e1c0e" stroke-width="4.9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18.2 12.5v17" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+          <path d="M31.8 12.5L21 21l10.8 8.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Конфиг Хаб
       </a>
@@ -79,7 +85,6 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
 
     <div class="page">
       <aside class="sidebar">
-        <h2>Шпаргалки</h2>
         <ol>
           {
             cheats.map((cheat) => {
