@@ -62,19 +62,61 @@ body {
   align-items: center;
   gap: 0.6rem;
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   letter-spacing: 0.01em;
   color: var(--accent);
   text-decoration: none;
+  /* фон плашки убран — остаётся только рамка вокруг названия */
+  padding: 0.35rem 0.8rem;
+  margin-left: -0.8rem;
+  border-radius: 10px;
+}
+
+/* название: рамка тёмно-серая + контур каждой буквы */
+.logo-text {
+  border: 1px solid var(--text);
+  border-radius: 8px;
+  padding: 0.05rem 0.55rem;
+  background: color-mix(in srgb, var(--bg-soft) 88%, var(--text) 12%);
+  box-shadow:
+    0 3px 0 color-mix(in srgb, var(--text) 45%, var(--bg-soft)),
+    0 5px 9px rgba(0, 0, 0, 0.16);
+  text-shadow:
+    0 2px 0 color-mix(in srgb, #fff 55%, transparent),
+    0 -1px 1px color-mix(in srgb, #000 22%, transparent),
+    -1px 0 var(--text),
+    1px 0 var(--text),
+    0 -1px var(--text),
+    0 1px var(--text);
+}
+
+html[data-theme='dark'] .logo-text {
+  background: color-mix(in srgb, var(--bg-soft) 82%, #000 18%);
+  box-shadow:
+    0 3px 0 #000,
+    0 5px 9px rgba(0, 0, 0, 0.5);
+  text-shadow:
+    0 2px 0 color-mix(in srgb, #fff 20%, transparent),
+    0 -1px 1px rgba(0, 0, 0, 0.5),
+    -1px 0 #000,
+    1px 0 #000,
+    0 -1px #000,
+    0 1px #000;
 }
 
 .logo-mark {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   flex-shrink: 0;
   border-radius: 9px;
-  box-shadow: 0 1px 4px rgba(210, 75, 48, 0.35);
   transition: transform 0.1s;
+  filter:
+    drop-shadow(0 -1px 1.5px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 1px 1px rgba(255, 255, 255, 0.22));
+}
+
+html[data-theme='dark'] .logo-mark {
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--text) 75%, transparent);
 }
 
 /* клавиша «нажимается»: слегка утапливается при наведении и клике */
@@ -315,6 +357,10 @@ html[data-theme='dark'] .theme-switch .knob {
   font-weight: 600;
 }
 
+html:not([data-theme='dark']) .sidebar a.active {
+  background: color-mix(in srgb, var(--accent-soft) 78%, var(--accent) 22%);
+}
+
 .sidebar a:hover:not(.active) {
   background: var(--border);
 }
@@ -383,11 +429,10 @@ html[data-theme='dark'] .theme-switch .knob {
 }
 
 .content code:not(pre code) {
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.1em 0.35em;
-  font-size: 0.88em;
+  font-family: Consolas, 'Cascadia Mono', Menlo, 'Courier New', monospace;
+  font-size: 1em;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .content blockquote {
