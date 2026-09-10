@@ -20,7 +20,7 @@ const { cheat, prev, next } = Astro.props;
 const { Content } = await render(cheat);
 ---
 
-<BaseLayout title={`${cheat.data.title} — Конфиг Хаб`}>
+<BaseLayout title={`${cheat.data.title} — Конфиг Хаб`} description={cheat.data.description}>
   <article>
     <h1>{cheat.data.title}</h1>
     <p class="cheat-meta">

@@ -38,8 +38,28 @@
 - `src/pages/index.astro` — главная
 - `src/pages/cheats/index.astro` — список всех шпаргалок
 - `src/pages/cheats/[id].astro` — страница шпаргалки
+- `src/pages/404.astro` — страница «не найдено»
 - `src/pages/search.json.ts` — поисковый индекс
+- `src/pages/sitemap.xml.ts` — карта сайта
+- `public/robots.txt` — правила для поисковых роботов
 - `src/styles/global.css` — стили
+
+## Публикация
+
+Сайт статический: результат сборки (`pnpm build`) — папка `dist/`, её можно
+положить на любой статик-хостинг. Адрес сайта задаётся в `astro.config.mjs`
+(`site`), от него зависят canonical-ссылки и карта сайта.
+
+Рекомендуемый вариант — **Cloudflare Pages**:
+
+1. Pages → Create project → подключить Git-репозиторий `Evgenii40/konfig-hab`.
+2. Build command: `pnpm build`, Build output directory: `dist`, Node: 22.
+3. Custom domains: добавить `konfig-hab.ru` и `www.konfig-hab.ru`.
+4. Прописать DNS-записи, которые предложит Cloudflare (у регистратора домена).
+5. HTTPS включается автоматически.
+6. Добавить сайт в Яндекс.Вебмастер и Google Search Console, указать `sitemap.xml`.
+
+Альтернативы: Netlify, Vercel, GitHub Pages (везде тот же `dist/`).
 
 ## Примечание
 

@@ -4,9 +4,15 @@ import '../styles/global.css';
 
 interface Props {
   title?: string;
+  description?: string;
 }
 
-const { title = 'Конфиг Хаб' } = Astro.props;
+const {
+  title = 'Конфиг Хаб',
+  description = 'Практические шпаргалки по 1С: интеграции, администрирование и приёмы работы с платформой 1С:Предприятие.',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
 const cheats = (await getCollection('cheats')).sort(
   (a, b) => a.data.order - b.data.order
@@ -19,8 +25,20 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" id="theme-color" content="#f7f6f3" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Конфиг Хаб" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <title>{title}</title>
     <script is:inline>
       // применяем тему до первой отрисовки, чтобы не мигало
@@ -28,6 +46,8 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         localStorage.getItem('theme') ||
         (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.dataset.theme = saved;
+      const themeColor = document.getElementById('theme-color');
+      if (themeColor) themeColor.content = saved === 'dark' ? '#0d1117' : '#f7f6f3';
     </script>
   </head>
   <body>
@@ -87,20 +107,23 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
 
     <div class="page">
       <aside class="sidebar">
-        <ol>
-          {
-            cheats.map((cheat) => {
-              const href = `/cheats/${cheat.id}/`;
-              return (
-                <li>
-                  <a href={href} class={currentPath === href.replace(/\/$/, '') ? 'active' : ''}>
-                    {cheat.data.title}
-                  </a>
-                </li>
-              );
-            })
-          }
-        </ol>
+        <details class="cheats-nav" open>
+          <summary>Шпаргалки</summary>
+          <ol>
+            {
+              cheats.map((cheat) => {
+                const href = `/cheats/${cheat.id}/`;
+                return (
+                  <li>
+                    <a href={href} class={currentPath === href.replace(/\/$/, '') ? 'active' : ''}>
+                      {cheat.data.title}
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ol>
+        </details>
       </aside>
 
       <main class="content">
@@ -215,8 +238,15 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = next;
         localStorage.setItem('theme', next);
+        const themeColor = document.getElementById('theme-color');
+        if (themeColor) themeColor.content = next === 'dark' ? '#0d1117' : '#f7f6f3';
         syncState();
       });
+
+      // на телефоне список шпаргалок свёрнут, чтобы не занимать весь экран
+      if (matchMedia('(max-width: 800px)').matches) {
+        document.querySelector('.cheats-nav')?.removeAttribute('open');
+      }
     </script>
   </body>
 </html>
