@@ -32,6 +32,16 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
   <body>
     <header class="site-header">
       <a href="/" class="logo">Шпаргалки по 1С</a>
+      <div class="site-search" id="site-search">
+        <input
+          type="search"
+          id="site-search-input"
+          placeholder="Поиск по шпаргалкам…"
+          autocomplete="off"
+          aria-label="Поиск по шпаргалкам"
+        />
+        <div class="search-results" id="search-results" hidden></div>
+      </div>
       <nav class="top-nav">
         <a href="/" class={currentPath === '' ? 'active' : ''}>Главная</a>
         <a href="/cheats/" class={currentPath === '/cheats' ? 'active' : ''}>Все шпаргалки</a>
@@ -82,6 +92,80 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     </footer>
 
     <script is:inline>
+      // Поиск по шпаргалкам в шапке (индекс подтягивается при первом вводе)
+      (function () {
+        const input = document.getElementById('site-search-input');
+        const box = document.getElementById('search-results');
+        if (!input || !box) return;
+
+        let index = null;
+        const close = () => {
+          box.hidden = true;
+        };
+
+        const render = (query) => {
+          if (!query) {
+            close();
+            return;
+          }
+          const q = query.toLowerCase();
+          const hits = index
+            .map((item) => ({
+              item,
+              inTitle: item.title.toLowerCase().includes(q),
+              inText: item.text.includes(q) || (item.tag || '').toLowerCase().includes(q),
+            }))
+            .filter((h) => h.inTitle || h.inText)
+            .sort((a, b) => Number(b.inTitle) - Number(a.inTitle))
+            .slice(0, 8);
+
+          box.innerHTML = '';
+          if (!hits.length) {
+            const p = document.createElement('p');
+            p.className = 'search-empty';
+            p.textContent = 'Ничего не найдено';
+            box.appendChild(p);
+          } else {
+            for (const { item } of hits) {
+              const a = document.createElement('a');
+              a.href = item.url;
+              if (item.tag) {
+                const s = document.createElement('span');
+                s.className = 'tag';
+                s.textContent = item.tag;
+                a.appendChild(s);
+              }
+              a.appendChild(document.createTextNode(item.title));
+              box.appendChild(a);
+            }
+          }
+          box.hidden = false;
+        };
+
+        input.addEventListener('input', async () => {
+          if (!index) {
+            try {
+              index = await (await fetch('/search.json')).json();
+            } catch {
+              index = [];
+            }
+          }
+          render(input.value.trim());
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            input.value = '';
+            close();
+            input.blur();
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.site-search')) close();
+        });
+      })();
+
       // Кнопка «копировать» на блоках кода
       document.querySelectorAll('.content pre').forEach((pre) => {
         const btn = document.createElement('button');

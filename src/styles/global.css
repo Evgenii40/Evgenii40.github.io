@@ -1,11 +1,11 @@
 :root {
-  --bg: #ffffff;
-  --bg-soft: #f6f8fa;
-  --border: #e2e8f0;
-  --text: #1e293b;
-  --text-muted: #64748b;
-  --accent: #d24b30; /* фирменный «1С-ный» красно-оранжевый */
-  --accent-soft: #fdeee9;
+  --bg: #f7f6f3; /* мягкий тёплый белый — меньше бликует, чем чисто белый */
+  --bg-soft: #eeece7;
+  --border: #e0ded5;
+  --text: #2b2f36;
+  --text-muted: #5f6470;
+  --accent: #c2482f; /* фирменный «1С-ный» красно-оранжевый, чуть глубже для контраста */
+  --accent-soft: #f6e7e0;
   --code-bg: #0f172a;
   --sidebar-width: 280px;
   color-scheme: light;
@@ -45,6 +45,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
   padding: 0.9rem 2rem;
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -150,10 +152,85 @@ html[data-theme='dark'] .theme-switch .knob {
 }
 
 /* на узких экранах подпись скрываем, остаётся только ползунок */
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .theme-switch .switch-label {
     display: none;
   }
+
+  .site-search {
+    position: static;
+    transform: none;
+    width: 100%;
+    order: 3;
+    flex-basis: 100%;
+  }
+}
+
+/* ---------- Поиск в шапке ---------- */
+.site-search {
+  /* поле стоит ровно над первой буквой текста: сайдбар (280px) + отступ контента (3rem) */
+  position: absolute;
+  left: 328px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(420px, max(140px, calc(100vw - 780px)));
+}
+
+.site-search input {
+  width: 100%;
+  font: inherit;
+  font-size: 0.92rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.15s;
+}
+
+.site-search input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  z-index: 50;
+}
+
+.search-results a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.92rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-results a:last-child {
+  border-bottom: none;
+}
+
+.search-results a:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.search-empty {
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
 /* ---------- Каркас страницы ---------- */
@@ -216,9 +293,9 @@ html[data-theme='dark'] .theme-switch .knob {
 
 /* ---------- Контент ---------- */
 .content {
-  max-width: 860px;
+  /* на всю ширину колонки, по бокам — только небольшие отступы (padding) */
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
   padding: 2rem 3rem 4rem;
 }
 
@@ -318,6 +395,11 @@ html[data-theme='dark'] .theme-switch .knob {
   font-weight: 600;
 }
 
+.cheat-empty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 /* ---------- Фильтр по тегам ---------- */
 .cheat-filter {
   display: flex;
@@ -395,6 +477,33 @@ html[data-theme='dark'] .theme-switch .knob {
   white-space: nowrap;
 }
 
+/* ---------- Таблицы ---------- */
+.content table {
+  display: block; /* горизонтальный скролл, если таблица шире колонки */
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.93rem;
+}
+
+.content th,
+.content td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.8rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content thead th {
+  background: var(--bg-soft);
+  font-weight: 600;
+}
+
+.content tbody tr:nth-child(even) {
+  background: var(--bg-soft);
+}
+
 /* ---------- Подвал ---------- */
 .site-footer {
   border-top: 1px solid var(--border);
@@ -406,6 +515,14 @@ html[data-theme='dark'] .theme-switch .knob {
 
 /* ---------- Мобильная версия ---------- */
 @media (max-width: 800px) {
+  .site-search {
+    position: static;
+    transform: none;
+    width: 100%;
+    order: 3;
+    flex-basis: 100%;
+  }
+
   .page {
     grid-template-columns: 1fr;
   }
