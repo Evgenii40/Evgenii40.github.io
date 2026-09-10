@@ -6,7 +6,7 @@ interface Props {
   title?: string;
 }
 
-const { title = 'Шпаргалки по 1С' } = Astro.props;
+const { title = 'Конфиг Хаб' } = Astro.props;
 
 const cheats = (await getCollection('cheats')).sort(
   (a, b) => a.data.order - b.data.order
@@ -20,6 +20,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <script is:inline>
       // применяем тему до первой отрисовки, чтобы не мигало
@@ -31,7 +32,20 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
   </head>
   <body>
     <header class="site-header">
-      <a href="/" class="logo">Шпаргалки по 1С</a>
+      <a href="/" class="logo">
+        <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
+          <defs>
+            <linearGradient id="logo-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff7a54"/>
+              <stop offset="1" stop-color="#c2482f"/>
+            </linearGradient>
+          </defs>
+          <rect width="48" height="48" rx="11" fill="url(#logo-grad)"/>
+          <path d="M17.2 13.5v21" fill="none" stroke="#fff" stroke-width="4.4" stroke-linecap="round"/>
+          <path d="M33.5 13.5L20.8 24l12.7 10.5" fill="none" stroke="#fff" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Конфиг Хаб
+      </a>
       <div class="site-search" id="site-search">
         <input
           type="search"
@@ -88,7 +102,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     </div>
 
     <footer class="site-footer">
-      <p>Шпаргалки по работе с 1С · сделано с ♥ на Astro</p>
+      <p>Конфиг Хаб · konfig-hab.ru</p>
     </footer>
 
     <script is:inline>
