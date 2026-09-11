@@ -394,7 +394,7 @@ html[data-theme='dark'] .sidebar-group summary {
 }
 
 html:not([data-theme='dark']) .sidebar a.active {
-  background: color-mix(in srgb, var(--accent-soft) 78%, var(--accent) 22%);
+  background: color-mix(in srgb, var(--accent-soft) 90%, var(--accent) 10%);
 }
 
 .sidebar a:hover:not(.active) {
