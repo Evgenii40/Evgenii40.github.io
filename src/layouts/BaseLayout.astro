@@ -36,7 +36,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     <meta name="theme-color" id="theme-color" content="#f7f6f3" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <Font cssVariable="--font-sans" preload={[{ subset: 'cyrillic' }]} />
+    <Font cssVariable="--font-sans" preload={[{ subset: 'cyrillic' }, { subset: 'latin' }]} />
     <link rel="canonical" href={canonical} />
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />

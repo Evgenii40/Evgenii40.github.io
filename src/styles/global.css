@@ -8,6 +8,7 @@
   --accent-soft: #f6e7e0;
   --code-bg: #0f172a;
   --sidebar-width: 280px;
+  --tag-size: 0.85rem; /* единый размер названий категорий (сайдбар, фильтр, теги) */
   color-scheme: light;
 }
 
@@ -30,6 +31,9 @@ html[data-theme='dark'] {
 
 html {
   scroll-behavior: smooth;
+  /* всегда резервируем место под полосу прокрутки — иначе при переходах
+     между страницами разной высоты текст дёргается */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -307,7 +311,7 @@ html[data-theme='dark'] .theme-switch .knob {
   margin-bottom: 0.5rem;
   padding: 0.35rem 0.7rem;
   border-radius: 8px;
-  font-size: 0.78rem;
+  font-size: var(--tag-size);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -371,7 +375,6 @@ html:not([data-theme='dark']) .sidebar-group summary:hover {
 .sidebar a.active {
   background: var(--accent-soft);
   color: var(--accent);
-  font-weight: 600;
 }
 
 html:not([data-theme='dark']) .sidebar a.active {
@@ -521,7 +524,7 @@ html:not([data-theme='dark']) .sidebar a.active {
   background: var(--bg);
   color: var(--text-muted);
   font: inherit;
-  font-size: 1rem;
+  font-size: var(--tag-size);
   padding: 0.4rem 1.05rem;
   border-radius: 999px;
   cursor: pointer;
@@ -579,7 +582,7 @@ html:not([data-theme='dark']) .sidebar a.active {
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent);
-  font-size: 0.75rem;
+  font-size: var(--tag-size);
   font-weight: 600;
   letter-spacing: 0.03em;
   white-space: nowrap;
