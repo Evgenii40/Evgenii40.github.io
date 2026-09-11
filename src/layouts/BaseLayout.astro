@@ -17,6 +17,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const cheats = (await getCollection('cheats')).sort(
   (a, b) => a.data.order - b.data.order
 );
+// группировка шпаргалок по категории для сайдбара
+const groups = new Map<string, typeof cheats>();
+for (const cheat of cheats) {
+  const tag = cheat.data.tag ?? 'Разное';
+  if (!groups.has(tag)) groups.set(tag, []);
+  groups.get(tag)!.push(cheat);
+}
 const currentPath = Astro.url.pathname.replace(/\/$/, '');
 ---
 
@@ -53,24 +60,14 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
   <body>
     <header class="site-header">
       <a href="/" class="logo" title="На главную">
-        <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
-          <defs>
-            <linearGradient id="logo-grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#ff7a54"/>
-              <stop offset="1" stop-color="#c2482f"/>
-            </linearGradient>
-          </defs>
-          <!-- корпус клавиши -->
-          <rect x="4" y="8" width="40" height="34" rx="7" fill="#7a2413" opacity="0.9"/>
-          <!-- верхняя грань клавиши с градиентом и тёмной обводкой -->
-          <rect x="4" y="5" width="40" height="32" rx="7" fill="url(#logo-grad)" stroke="#5e1c0e" stroke-width="1.6"/>
-          <!-- буква К: белая, с тенью сверху и бликом снизу (эффект утопленности) -->
-          <path d="M18.2 11.4v17" fill="none" stroke="#3a0f06" stroke-width="4" stroke-linecap="round"/>
-          <path d="M31.8 11.4L21 19.9l10.8 8.5" fill="none" stroke="#3a0f06" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M18.2 13.6v17" fill="none" stroke="#ffc9a8" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
-          <path d="M31.8 13.6L21 22.1l10.8 8.5" fill="none" stroke="#ffc9a8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
-          <path d="M18.2 12.5v17" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-          <path d="M31.8 12.5L21 21l10.8 8.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+          <!-- скруглённый квадрат-фон -->
+          <rect x="4" y="4" width="56" height="56" rx="14" fill="currentColor" stroke="none"/>
+          <!-- фигурные скобки { } -->
+          <path d="M16 15C12.5 15 11.5 18 11.5 21.5L11.5 28C11.5 30.5 10 32 7.5 32C10 32 11.5 33.5 11.5 36L11.5 42.5C11.5 46 12.5 49 16 49"/>
+          <path d="M48 15C51.5 15 52.5 18 52.5 21.5L52.5 28C52.5 30.5 54 32 56.5 32C54 32 52.5 33.5 52.5 36L52.5 42.5C52.5 46 51.5 49 48 49"/>
+          <!-- буква К — тем же шрифтом, что и слово «Конфиг Хаб» -->
+          <text x="31" y="30" text-anchor="middle" dominant-baseline="central" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-weight="700" font-size="40" fill="#fff" stroke="none">К</text>
         </svg>
         <span class="logo-text">Конфиг Хаб</span>
       </a>
@@ -109,20 +106,25 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
       <aside class="sidebar">
         <details class="cheats-nav" open>
           <summary>Шпаргалки</summary>
-          <ol>
-            {
-              cheats.map((cheat) => {
-                const href = `/cheats/${cheat.id}/`;
-                return (
-                  <li>
-                    <a href={href} class={currentPath === href.replace(/\/$/, '') ? 'active' : ''}>
-                      {cheat.data.title}
-                    </a>
-                  </li>
-                );
-              })
-            }
-          </ol>
+          {
+            [...groups.entries()].map(([tag, groupCheats]) => (
+              <details class="sidebar-group" open data-group={tag}>
+                <summary>{tag}</summary>
+                <ol>
+                  {groupCheats.map((cheat) => {
+                    const href = `/cheats/${cheat.id}/`;
+                    return (
+                      <li>
+                        <a href={href} class={currentPath === href.replace(/\/$/, '') ? 'active' : ''}>
+                          {cheat.data.title}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </details>
+            ))
+          }
         </details>
       </aside>
 
@@ -136,6 +138,15 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     </footer>
 
     <script is:inline>
+      // запоминаем свёрнутые группы сайдбара
+      document.querySelectorAll('details.sidebar-group').forEach((group) => {
+        const key = 'sb-group:' + (group.dataset.group ?? '');
+        if (localStorage.getItem(key) === 'closed') group.open = false;
+        group.addEventListener('toggle', () => {
+          localStorage.setItem(key, group.open ? 'open' : 'closed');
+        });
+      });
+
       // Поиск по шпаргалкам в шапке (индекс подтягивается при первом вводе)
       (function () {
         const input = document.getElementById('site-search-input');
