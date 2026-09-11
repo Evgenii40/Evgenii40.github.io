@@ -76,17 +76,17 @@ body {
   border-radius: 10px;
 }
 
-/* название: без плашки и фона, только утопленные буквы */
+/* название: без плашки и фона; обводка как у буквы в знаке */
 .logo-text {
   text-shadow:
-    0 2px 0 color-mix(in srgb, #fff 55%, transparent),
-    0 -1px 1px color-mix(in srgb, #000 22%, transparent);
-}
-
-html[data-theme='dark'] .logo-text {
-  text-shadow:
-    0 2px 0 color-mix(in srgb, #fff 20%, transparent),
-    0 -1px 1px rgba(0, 0, 0, 0.5);
+    -0.5px -0.5px 0 #3a3a3a,
+    0 -0.5px 0 #3a3a3a,
+    0.5px -0.5px 0 #3a3a3a,
+    -0.5px 0 0 #3a3a3a,
+    0.5px 0 0 #3a3a3a,
+    -0.5px 0.5px 0 #3a3a3a,
+    0 0.5px 0 #3a3a3a,
+    0.5px 0.5px 0 #3a3a3a;
 }
 
 .logo-mark {
