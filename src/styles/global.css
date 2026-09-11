@@ -43,6 +43,27 @@ html {
   /* всегда резервируем место под полосу прокрутки — иначе при переходах
      между страницами разной высоты текст дёргается */
   scrollbar-gutter: stable;
+  /* тонкая полоса прокрутки основного окна — как в сайдбаре */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* тонкая полоса прокрутки основного окна (Chrome/Edge/Safari) */
+html::-webkit-scrollbar {
+  width: 6px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 body {
@@ -408,6 +429,31 @@ html:not([data-theme='dark']) .sidebar a.active {
     top: calc(var(--header-h, 5rem) + 1.5rem);
     max-height: calc(100vh - var(--header-h, 5rem) - 2.5rem);
     overflow-y: auto;
+    /* зарезервированное место под прокрутку: полоса не наезжает на текст */
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    padding-right: 0.15rem;
+    /* сдвигаем полосу прокрутки ближе к правому краю сайдбара */
+    margin-right: -1.35rem;
+  }
+
+  /* тонкая полоса прокрутки в тон фона (Chrome/Edge/Safari) */
+  .sidebar > .cheats-nav::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar > .cheats-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar > .cheats-nav::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+  }
+
+  .sidebar > .cheats-nav::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
   }
 }
 
@@ -798,4 +844,83 @@ html:not([data-theme='dark']) .astro-code {
     flex-direction: column;
     gap: 0.75rem;
   }
+}
+
+/* ---------- Глоссарий ---------- */
+.glossary-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.glossary-nav a {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: var(--tag-size);
+  padding: 0.4rem 1.05rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.glossary-nav a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.glossary-group {
+  margin-top: 2.2rem;
+}
+
+.glossary-group h2 {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3rem;
+  scroll-margin-top: 5rem;
+}
+
+.glossary-term {
+  padding: 0.9rem 0 0.9rem 1rem;
+  border-left: 3px solid var(--border);
+  margin: 0.8rem 0;
+  border-radius: 0 8px 8px 0;
+  transition: background 0.3s, border-color 0.3s;
+  /* якорь термина стоит на article — отступ под липкую шапку нужен именно здесь,
+     иначе заголовок термина скрывается под шапкой и кажется, что открылся не тот */
+  scroll-margin-top: calc(var(--header-h, 5rem) + 0.75rem);
+}
+
+.glossary-term:hover {
+  border-left-color: var(--accent);
+}
+
+/* термин, к которому перешли по ссылке, подсвечиваем */
+.glossary-term:target {
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+  padding-right: 1rem;
+}
+
+.glossary-term:target h3 {
+  color: var(--accent);
+}
+
+.glossary-term h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+  scroll-margin-top: 5rem;
+}
+
+.glossary-abbr {
+  display: inline-block;
+  margin-left: 0.5rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.glossary-term p {
+  margin: 0.2rem 0;
+  font-size: 0.98rem;
 }

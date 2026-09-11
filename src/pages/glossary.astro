@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const catAnchor: Record<string, string> = {
+  'Общее': 'web',
+  'Интеграция': 'integration',
+  'Администрирование': 'admin',
+  'Настройка': 'config',
+};
+const catOrder = ['Общее', 'Интеграция', 'Администрирование', 'Настройка'];
+
+const entries = (await getCollection('glossary')).sort((a, b) =>
+  a.data.term.localeCompare(b.data.term, 'ru')
+);
+
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({ entry, Content: (await render(entry)).Content }))
+);
+
+const groups = new Map<string, typeof rendered>();
+for (const item of rendered) {
+  const cat = item.entry.data.category ?? 'Разное';
+  if (!groups.has(cat)) groups.set(cat, []);
+  groups.get(cat)!.push(item);
+}
+
+const sortedGroups = [...groups.entries()].sort(
+  (a, b) => catOrder.indexOf(a[0]) - catOrder.indexOf(b[0])
+);
+---
+
+<BaseLayout
+  title="Глоссарий — Конфиг Хаб"
+  description="Краткий словарик терминов 1С: расшифровка аббревиатур и понятий, которые встречаются в шпаргалках — HTTP, REST, SOAP, РИБ, RLS, КД 2.0 и другие."
+>
+  <h1>Глоссарий</h1>
+  <p class="cheat-meta">
+    Короткий словарик терминов и аббревиатур, которые встречаются в шпаргалках.
+    Из статей сюда ведут ссылки по первому упоминанию слова — если встретили
+    незнакомую аббревиатуру, откройте её здесь.
+  </p>
+
+  <nav class="glossary-nav" aria-label="Разделы глоссария">
+    {
+      sortedGroups.map(([cat]) => (
+        <a href={`#${catAnchor[cat] ?? cat}`}>{cat}</a>
+      ))
+    }
+  </nav>
+
+  {
+    sortedGroups.map(([cat, items]) => (
+      <section class="glossary-group">
+        <h2 id={catAnchor[cat] ?? cat}>{cat}</h2>
+        {
+          items.map(({ entry, Content }) => (
+            <article class="glossary-term" id={entry.id}>
+              <h3>
+                {entry.data.term}
+                {entry.data.abbr && <span class="glossary-abbr">{entry.data.abbr}</span>}
+              </h3>
+              <Content />
+            </article>
+          ))
+        }
+      </section>
+    ))
+  }
+</BaseLayout>

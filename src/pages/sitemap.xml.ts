@@ -6,7 +6,7 @@ export async function GET({ site }) {
   );
 
   const base = site ?? new URL('https://konfig-hab.ru');
-  const paths = ['/', '/cheats/', ...cheats.map((cheat) => `/cheats/${cheat.id}/`)];
+  const paths = ['/', '/cheats/', '/glossary/', ...cheats.map((cheat) => `/cheats/${cheat.id}/`)];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

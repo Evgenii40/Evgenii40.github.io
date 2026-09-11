@@ -12,4 +12,16 @@ const cheats = defineCollection({
   }),
 });
 
-export const collections = { cheats };
+const glossary = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/glossary' }),
+  schema: z.object({
+    // Короткое название термина/аббревиатуры (заголовок записи)
+    term: z.string(),
+    // Расшифровка или полное название (показывается рядом с term)
+    abbr: z.string().optional(),
+    // Раздел глоссария: Общее / Интеграция / Администрирование / Настройка
+    category: z.string(),
+  }),
+});
+
+export const collections = { cheats, glossary };
