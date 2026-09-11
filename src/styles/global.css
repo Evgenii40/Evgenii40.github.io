@@ -1,12 +1,12 @@
 :root {
-  --bg: #f7f6f3; /* мягкий тёплый белый — меньше бликует, чем чисто белый */
+  --bg: #f7f6f3;
   --bg-soft: #eeece7;
   --border: #e0ded5;
   --text: #2b2f36;
   --text-muted: #5f6470;
-  --accent: #c2482f; /* фирменный «1С-ный» красно-оранжевый, чуть глубже для контраста */
+  --accent: #c2482f;
   --accent-soft: #f6e7e0;
-  --code-bg: #1b1511; /* тёплый тёмный фон под код */
+  --code-bg: #1b1511;
   --sidebar-width: 280px;
   --tag-size: 0.85rem; /* единый размер названий категорий (сайдбар, фильтр, теги) */
   color-scheme: light;
@@ -14,15 +14,21 @@
 
 /* ---------- Тёмная тема ---------- */
 html[data-theme='dark'] {
-  --bg: #0f0c0a; /* тёплый почти чёрный */
+  --bg: #0f0c0a;
   --bg-soft: #191410;
   --border: #322b25;
-  --text: #d7cfc4; /* тёплый крем, слегка приглушённый */
-  --text-muted: #a89c8c;
+  --text: #d7cfc4;
+  --text-muted: #bdb2a2;
   --accent: #ff7a54;
   --accent-soft: #2a1c15;
   --code-bg: #0c0a08;
   color-scheme: dark;
+}
+
+/* в тёмной теме шапка и сайдбар — нейтрально-серые (менее тёплые) */
+html[data-theme='dark'] .site-header,
+html[data-theme='dark'] .sidebar {
+  background: #202020;
 }
 
 * {
@@ -337,6 +343,13 @@ html:not([data-theme='dark']) .sidebar-group summary:hover {
   color: var(--accent);
 }
 
+/* в тёмной теме плашка группы — серая, чтобы отличалась от серого сайдбара */
+html[data-theme='dark'] .sidebar-group summary {
+  background: #333333;
+  border: 1px solid #444444;
+  color: #e0e0e0;
+}
+
 .sidebar-group summary::-webkit-details-marker {
   display: none;
 }
@@ -440,12 +453,36 @@ html:not([data-theme='dark']) .sidebar a.active {
 .content pre {
   position: relative;
   background: var(--code-bg);
-  color: #e8e0d5;
   padding: 1rem 1.25rem;
   border-radius: 10px;
   overflow-x: auto;
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+/* В тёмной теме блок кода остаётся тёмным — берём цвета --shiki-dark */
+html[data-theme='dark'] .content pre {
+  filter: brightness(1.12);
+}
+
+html[data-theme='dark'] .astro-code,
+html[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* В светлой теме фон блока кода — бледнее (только фон, токены не трогаем) */
+/* В тёмной теме фон блока кода — темнее (Gruvbox dark0) */
+html[data-theme='dark'] .astro-code,
+html[data-theme='dark'] .astro-code span {
+  background-color: #282828 !important;
+}
+
+html:not([data-theme='dark']) .astro-code {
+  background-color: #f9f5d7 !important;
 }
 
 .copy-btn {

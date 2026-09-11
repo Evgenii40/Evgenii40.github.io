@@ -19,8 +19,10 @@ export default defineConfig({
     },
   ],
   markdown: {
-    // тёплая тема подсветки кода вместо холодной github-dark
-    shikiConfig: { theme: 'vitesse-dark' },
+    // подсветка кода следует теме сайта: светлая и тёмная палитры Gruvbox
+    shikiConfig: {
+      themes: { light: 'gruvbox-light-soft', dark: 'gruvbox-dark-soft' },
+    },
   },
   vite: {
     plugins: [
