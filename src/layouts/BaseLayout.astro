@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Font } from 'astro:assets';
 import '../styles/global.css';
 
 interface Props {
@@ -35,6 +36,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     <meta name="theme-color" id="theme-color" content="#f7f6f3" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <Font cssVariable="--font-sans" preload={[{ subset: 'cyrillic' }]} />
     <link rel="canonical" href={canonical} />
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />
@@ -60,14 +62,18 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
   <body>
     <header class="site-header">
       <a href="/" class="logo" title="На главную">
-        <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+        <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#f6d98a" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
           <!-- скруглённый квадрат-фон -->
-          <rect x="4" y="4" width="56" height="56" rx="14" fill="currentColor" stroke="none"/>
-          <!-- фигурные скобки { } -->
+          <rect x="4" y="4" width="56" height="56" rx="14" fill="currentColor" stroke="#3a3a3a" stroke-width="1"/>
+          <!-- фигурные скобки { } с тёмно-серой обводкой 0,5 -->
+          <g stroke="#3a3a3a" stroke-width="5.5">
+            <path d="M16 15C12.5 15 11.5 18 11.5 21.5L11.5 28C11.5 30.5 10 32 7.5 32C10 32 11.5 33.5 11.5 36L11.5 42.5C11.5 46 12.5 49 16 49"/>
+            <path d="M48 15C51.5 15 52.5 18 52.5 21.5L52.5 28C52.5 30.5 54 32 56.5 32C54 32 52.5 33.5 52.5 36L52.5 42.5C52.5 46 51.5 49 48 49"/>
+          </g>
           <path d="M16 15C12.5 15 11.5 18 11.5 21.5L11.5 28C11.5 30.5 10 32 7.5 32C10 32 11.5 33.5 11.5 36L11.5 42.5C11.5 46 12.5 49 16 49"/>
           <path d="M48 15C51.5 15 52.5 18 52.5 21.5L52.5 28C52.5 30.5 54 32 56.5 32C54 32 52.5 33.5 52.5 36L52.5 42.5C52.5 46 51.5 49 48 49"/>
-          <!-- буква К — тем же шрифтом, что и слово «Конфиг Хаб» -->
-          <text x="31" y="30" text-anchor="middle" dominant-baseline="central" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-weight="700" font-size="40" fill="#fff" stroke="none">К</text>
+          <!-- буква К — контур из шрифта Inter Bold (не зависит от загрузки шрифта) -->
+          <path d="M18.43 44.55L18.43 15.45L24.39 15.45L24.39 27.27L27.75 27.27L36.01 15.45L43.08 15.45L32.73 29.61L43.57 44.55L36.5 44.55L27.73 32.13L24.39 32.13L24.39 44.55Z" fill="#f6d98a" stroke="#3a3a3a" stroke-width="1"/>
         </svg>
         <span class="logo-text">Конфиг Хаб</span>
       </a>

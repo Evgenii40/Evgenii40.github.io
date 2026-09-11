@@ -34,7 +34,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.65;
@@ -89,11 +89,11 @@ html[data-theme='dark'] .logo-text {
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-  transition: transform 0.3s;
+  transition: transform 0.12s;
 }
 
-/* знак слегка увеличивается при наведении */
-.logo:hover .logo-mark {
+/* знак слегка увеличивается при нажатии */
+.logo:active .logo-mark {
   transform: scale(1.08);
 }
 
