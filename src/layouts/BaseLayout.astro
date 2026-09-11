@@ -56,7 +56,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.dataset.theme = saved;
       const themeColor = document.getElementById('theme-color');
-      if (themeColor) themeColor.content = saved === 'dark' ? '#0d1117' : '#f7f6f3';
+      if (themeColor) themeColor.content = saved === 'dark' ? '#0f0c0a' : '#f7f6f3';
     </script>
   </head>
   <body>
@@ -152,6 +152,16 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           localStorage.setItem(key, group.open ? 'open' : 'closed');
         });
       });
+
+      // высота липкой шапки — чтобы сайдбар прилипал ровно на своём месте
+      (function () {
+        const header = document.querySelector('.site-header');
+        if (!header) return;
+        const apply = () =>
+          document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+        apply();
+        addEventListener('resize', apply);
+      })();
 
       // Поиск по шпаргалкам в шапке (индекс подтягивается при первом вводе)
       (function () {
@@ -256,7 +266,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         document.documentElement.dataset.theme = next;
         localStorage.setItem('theme', next);
         const themeColor = document.getElementById('theme-color');
-        if (themeColor) themeColor.content = next === 'dark' ? '#0d1117' : '#f7f6f3';
+        if (themeColor) themeColor.content = next === 'dark' ? '#0f0c0a' : '#f7f6f3';
         syncState();
       });
 

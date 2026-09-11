@@ -6,7 +6,7 @@
   --text-muted: #5f6470;
   --accent: #c2482f; /* фирменный «1С-ный» красно-оранжевый, чуть глубже для контраста */
   --accent-soft: #f6e7e0;
-  --code-bg: #0f172a;
+  --code-bg: #1b1511; /* тёплый тёмный фон под код */
   --sidebar-width: 280px;
   --tag-size: 0.85rem; /* единый размер названий категорий (сайдбар, фильтр, теги) */
   color-scheme: light;
@@ -14,14 +14,14 @@
 
 /* ---------- Тёмная тема ---------- */
 html[data-theme='dark'] {
-  --bg: #0d1117;
-  --bg-soft: #161b22;
-  --border: #2d333b;
-  --text: #e6edf3;
-  --text-muted: #8b949e;
+  --bg: #0f0c0a; /* тёплый почти чёрный */
+  --bg-soft: #191410;
+  --border: #322b25;
+  --text: #d7cfc4; /* тёплый крем, слегка приглушённый */
+  --text-muted: #a89c8c;
   --accent: #ff7a54;
-  --accent-soft: #2e1d17;
-  --code-bg: #0a0e1a;
+  --accent-soft: #2a1c15;
+  --code-bg: #0c0a08;
   color-scheme: dark;
 }
 
@@ -31,6 +31,9 @@ html[data-theme='dark'] {
 
 html {
   scroll-behavior: smooth;
+  /* не даём мобильному браузеру самовольно масштабировать текст */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   /* всегда резервируем место под полосу прокрутки — иначе при переходах
      между страницами разной высоты текст дёргается */
   scrollbar-gutter: stable;
@@ -41,7 +44,7 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 /* ---------- Шапка ---------- */
@@ -385,12 +388,22 @@ html:not([data-theme='dark']) .sidebar a.active {
   background: var(--border);
 }
 
+/* на десктопе список шпаргалок остаётся на своём месте и не поднимается под шапку */
+@media (min-width: 801px) {
+  .sidebar > .cheats-nav {
+    position: sticky;
+    top: calc(var(--header-h, 5rem) + 1.5rem);
+    max-height: calc(100vh - var(--header-h, 5rem) - 2.5rem);
+    overflow-y: auto;
+  }
+}
+
 /* ---------- Контент ---------- */
 .content {
-  /* на всю ширину колонки, по бокам — только небольшие отступы (padding) */
   width: 100%;
   margin: 0;
   padding: 2rem 3rem 4rem;
+  font-size: 1.0625rem;
 }
 
 /* Текст по ширине с аккуратными переносами (страница помечена lang="ru") */
@@ -406,6 +419,18 @@ html:not([data-theme='dark']) .sidebar a.active {
   margin-top: 0;
 }
 
+/* заголовки не разрываем некрасиво, якоря не прячем под липкой шапкой */
+.content h1,
+.content h2,
+.content h3 {
+  text-wrap: balance;
+}
+
+.content h2,
+.content h3 {
+  scroll-margin-top: 5rem;
+}
+
 .content h2 {
   margin-top: 2.2rem;
   border-bottom: 1px solid var(--border);
@@ -415,7 +440,7 @@ html:not([data-theme='dark']) .sidebar a.active {
 .content pre {
   position: relative;
   background: var(--code-bg);
-  color: #e2e8f0;
+  color: #e8e0d5;
   padding: 1rem 1.25rem;
   border-radius: 10px;
   overflow-x: auto;
@@ -427,9 +452,9 @@ html:not([data-theme='dark']) .sidebar a.active {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  border: 1px solid rgba(226, 232, 240, 0.25);
-  background: rgba(15, 23, 42, 0.85);
-  color: #94a3b8;
+  border: 1px solid rgba(232, 224, 213, 0.25);
+  background: rgba(27, 21, 17, 0.85);
+  color: #b3a695;
   font: inherit;
   font-size: 0.75rem;
   padding: 0.2rem 0.6rem;
@@ -445,7 +470,7 @@ html:not([data-theme='dark']) .sidebar a.active {
 }
 
 .copy-btn:hover {
-  color: #e2e8f0;
+  color: #ece4d8;
 }
 
 /* на тач-устройствах hover нет — кнопку показываем всегда */
@@ -698,7 +723,12 @@ html:not([data-theme='dark']) .sidebar a.active {
   }
 
   .sidebar a {
-    padding: 0.55rem 0.6rem;
+    padding: 0.7rem 0.6rem;
+  }
+
+  /* на тач-экранах кнопки-фильтры делаем крупнее */
+  .cheat-filter button {
+    padding: 0.55rem 1.15rem;
   }
 
   .content {
@@ -722,7 +752,8 @@ html:not([data-theme='dark']) .sidebar a.active {
   }
 
   .content pre {
-    font-size: 0.82rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
     padding: 0.85rem 1rem;
   }
 

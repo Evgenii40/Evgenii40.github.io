@@ -18,6 +18,10 @@ export default defineConfig({
       display: 'swap',
     },
   ],
+  markdown: {
+    // тёплая тема подсветки кода вместо холодной github-dark
+    shikiConfig: { theme: 'vitesse-dark' },
+  },
   vite: {
     plugins: [
       {
