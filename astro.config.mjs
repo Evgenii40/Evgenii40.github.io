@@ -17,6 +17,16 @@ export default defineConfig({
       optimizedFallbacks: true,
       display: 'swap',
     },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'JetBrains Mono',
+      cssVariable: '--font-mono',
+      weights: [400, 500, 700],
+      styles: ['normal'],
+      subsets: ['cyrillic', 'latin'],
+      fallbacks: ['Consolas', 'monospace'],
+      display: 'swap',
+    },
   ],
   markdown: {
     // подсветка кода следует теме сайта: светлая и тёмная палитры Gruvbox

@@ -17,7 +17,8 @@ export async function getStaticPaths() {
 }
 
 const { cheat, prev, next } = Astro.props;
-const { Content } = await render(cheat);
+const { Content, headings } = await render(cheat);
+const toc = headings.filter((h) => h.depth === 2);
 ---
 
 <BaseLayout title={`${cheat.data.title} — Конфиг Хаб`} description={cheat.data.description}>
@@ -27,6 +28,21 @@ const { Content } = await render(cheat);
       {cheat.data.tag && <span class="tag">{cheat.data.tag}</span>}
       {cheat.data.description}
     </p>
+
+    {
+      toc.length >= 4 && (
+        <nav class="toc" aria-label="Содержание">
+          <div class="toc-title">Содержание</div>
+          <ol>
+            {toc.map((h) => (
+              <li>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
 
     <Content />
 

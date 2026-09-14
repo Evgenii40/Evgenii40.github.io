@@ -58,7 +58,7 @@ const sortedGroups = [...groups.entries()].sort(
             <article class="glossary-term" id={entry.id}>
               <h3>
                 {entry.data.term}
-                {entry.data.abbr && <span class="glossary-abbr">{entry.data.abbr}</span>}
+                {entry.data.abbr && <span class="glossary-abbr">({entry.data.abbr})</span>}
               </h3>
               <Content />
             </article>

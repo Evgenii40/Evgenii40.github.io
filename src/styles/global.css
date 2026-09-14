@@ -499,6 +499,7 @@ html:not([data-theme='dark']) .sidebar a.active {
 .content pre {
   position: relative;
   background: var(--code-bg);
+  font-family: var(--font-mono), Consolas, monospace;
   padding: 1rem 1.25rem;
   border-radius: 10px;
   overflow-x: auto;
@@ -564,7 +565,7 @@ html:not([data-theme='dark']) .astro-code {
 }
 
 .content code:not(pre code) {
-  font-family: Consolas, 'Cascadia Mono', Menlo, 'Courier New', monospace;
+  font-family: var(--font-mono), Consolas, monospace;
   font-size: 1em;
   color: var(--accent);
   font-weight: 600;
@@ -909,6 +910,7 @@ html:not([data-theme='dark']) .astro-code {
 .glossary-term h3 {
   margin: 0 0 0.25rem;
   font-size: 1.05rem;
+  color: var(--accent);
   scroll-margin-top: 5rem;
 }
 
@@ -923,4 +925,76 @@ html:not([data-theme='dark']) .astro-code {
 .glossary-term p {
   margin: 0.2rem 0;
   font-size: 0.98rem;
+}
+
+/* ---------- «С чего начать» на главной ---------- */
+.start-here {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin: 0 0 2rem;
+}
+
+.start-here h2 {
+  margin-top: 0;
+  border-bottom: 0;
+}
+
+.start-here ul {
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.start-here li {
+  margin: 0.4rem 0;
+}
+
+.start-here-more {
+  margin-top: 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* ---------- Оглавление статьи ---------- */
+.toc {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.75rem;
+}
+
+.toc-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.toc ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.toc li {
+  margin: 0.25rem 0;
+}
+
+.toc a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.toc a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Примечание в конце статьи/страницы ---------- */
+.hint {
+  margin-top: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
 }

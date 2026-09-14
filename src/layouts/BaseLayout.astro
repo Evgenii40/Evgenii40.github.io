@@ -14,6 +14,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
 
 const cheats = (await getCollection('cheats')).sort(
   (a, b) => a.data.order - b.data.order
@@ -36,7 +37,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     <meta name="theme-color" id="theme-color" content="#f7f6f3" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <Font cssVariable="--font-sans" preload={[{ subset: 'cyrillic' }, { subset: 'latin' }]} />
+    <Font cssVariable="--font-mono" preload={[{ subset: 'cyrillic' }, { subset: 'latin' }]} />
     <link rel="canonical" href={canonical} />
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />
@@ -45,9 +48,14 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="ru_RU" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Конфиг Хаб — практические шпаргалки по 1С" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <title>{title}</title>
     <script is:inline>
       // применяем тему до первой отрисовки, чтобы не мигало
@@ -84,6 +92,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         <a href="/" class={currentPath === '' ? 'active' : ''}>Главная</a>
         <a href="/cheats/" class={currentPath === '/cheats' ? 'active' : ''}>Все шпаргалки</a>
         <a href="/glossary/" class={currentPath === '/glossary' ? 'active' : ''}>Глоссарий</a>
+        <a href="/about/" class={currentPath === '/about' ? 'active' : ''}>О проекте</a>
         <button
           class="theme-switch"
           id="theme-toggle"
