@@ -219,24 +219,9 @@ html[data-theme='dark'] .theme-switch .knob {
   left: calc(100% - 1.26rem);
 }
 
-/* на узких экранах подпись скрываем, остаётся только ползунок */
-@media (max-width: 900px) {
-  .theme-switch .switch-label {
-    display: none;
-  }
-
-  .site-search {
-    position: static;
-    transform: none;
-    width: 100%;
-    order: 3;
-    flex-basis: 100%;
-  }
-}
-
 /* ---------- Поиск в шапке ---------- */
 .site-search {
-  /* поле стоит ровно над первой буквой текста: сайдбар (280px) + отступ контента (3rem) */
+  /* поле выровнено над первой буквой текста статьи (сайдбар 280px + отступ 3rem) */
   position: absolute;
   left: 328px;
   top: 50%;
@@ -757,6 +742,46 @@ html:not([data-theme='dark']) .astro-code {
 
   .top-nav a {
     font-size: 0.95rem;
+  }
+
+  /* переключатель темы — выше, на уровне названия, и от края экрана */
+  .theme-switch {
+    position: absolute;
+    top: 0.7rem;
+    right: 1rem;
+    z-index: 5;
+  }
+
+  /* поиск на телефоне — во всю ширину, отдельной строкой под шапкой */
+  .site-search {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 100%;
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  /* подпись у переключателя темы на телефоне убираем */
+  .theme-switch .switch-label {
+    display: none;
+  }
+
+  /* ползунок темы делаем заметнее */
+  .theme-switch .track {
+    width: 3rem;
+    height: 1.6rem;
+  }
+
+  .theme-switch .knob {
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 0.72rem;
+  }
+
+  html[data-theme='dark'] .theme-switch .knob {
+    left: calc(100% - 1.41rem);
   }
 }
 
