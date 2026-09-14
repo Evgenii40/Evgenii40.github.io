@@ -227,9 +227,14 @@ html[data-theme='dark'] .theme-switch .knob {
   top: 50%;
   transform: translateY(-50%);
   width: min(560px, max(160px, calc(100vw - 920px)));
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .site-search input {
+  flex: 1;
+  min-width: 0;
   width: 100%;
   font: inherit;
   font-size: 0.98rem;
@@ -408,7 +413,7 @@ html:not([data-theme='dark']) .sidebar a.active {
 }
 
 /* на десктопе список шпаргалок остаётся на своём месте и не поднимается под шапку */
-@media (min-width: 801px) {
+@media (min-width: 901px) {
   .sidebar > .cheats-nav {
     position: sticky;
     top: calc(var(--header-h, 5rem) + 1.5rem);
@@ -739,6 +744,8 @@ html:not([data-theme='dark']) .astro-code {
   .top-nav {
     flex-wrap: wrap;
     gap: 0.4rem 0.9rem;
+    /* не даём меню заезжать под абсолютный переключатель темы */
+    padding-right: 4.5rem;
   }
 
   .top-nav a {
@@ -753,9 +760,11 @@ html:not([data-theme='dark']) .astro-code {
   /* переключатель темы — выше, на уровне названия, и от края экрана */
   .theme-switch {
     position: absolute;
-    top: 0.7rem;
+    top: 0.9rem;
     right: 1rem;
     z-index: 5;
+    height: 2.55rem;
+    align-items: center;
   }
 
   /* поиск на телефоне — во всю ширину, отдельной строкой под шапкой */
@@ -765,9 +774,15 @@ html:not([data-theme='dark']) .astro-code {
     top: auto;
     transform: none;
     width: 100%;
-    max-width: 18rem;
     order: 3;
     flex-basis: 100%;
+  }
+
+  /* на телефоне поле поиска ниже по высоте и уже, а кнопка «Скрыть меню» — у правого края */
+  .site-search input {
+    max-width: 18rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
   }
 
   /* подпись у переключателя темы на телефоне убираем */
@@ -813,7 +828,7 @@ html:not([data-theme='dark']) .astro-code {
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .page {
     grid-template-columns: 1fr;
     min-height: auto;
@@ -1055,4 +1070,86 @@ html:not([data-theme='dark']) .astro-code {
   margin-top: 1.5rem;
   color: var(--text-muted);
   font-size: 0.95rem;
+}
+
+/* ---------- Свернуть шапку (кнопка рядом с поиском) ---------- */
+.header-collapse {
+  flex-shrink: 0;
+  margin-left: auto;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.85rem;
+  border: 1.5px solid var(--text-muted);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.header-collapse:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+html.header-hidden .site-header {
+  display: none;
+}
+
+/* ---------- Вернуть шапку (виден только когда шапка скрыта) ---------- */
+.header-show {
+  display: none;
+}
+
+html.header-hidden .header-show {
+  display: flex;
+  position: fixed;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 60;
+  width: 2.4rem;
+  height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-soft);
+  color: var(--text-muted);
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+html.header-hidden .header-show:hover {
+  color: var(--accent);
+}
+
+/* ---------- Вернуться к началу текста ---------- */
+.scroll-top {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.scroll-top:hover {
+  color: var(--accent);
+  opacity: 1;
 }

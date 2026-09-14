@@ -86,6 +86,15 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           autocomplete="off"
           aria-label="Поиск по шпаргалкам"
         />
+        <button
+          class="header-collapse"
+          id="header-collapse"
+          type="button"
+          aria-label="Скрыть меню"
+          title="Скрыть меню"
+        >
+          Скрыть меню
+        </button>
         <div class="search-results" id="search-results" hidden></div>
       </div>
       <nav class="top-nav">
@@ -277,6 +286,78 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
       if (matchMedia('(max-width: 800px)').matches) {
         document.querySelector('.cheats-nav')?.removeAttribute('open');
       }
+    </script>
+
+    <button
+      class="header-show"
+      id="header-show"
+      type="button"
+      aria-label="Показать шапку"
+      title="Показать шапку"
+    >
+      <span aria-hidden="true">▼</span>
+    </button>
+
+    <button
+      class="scroll-top"
+      id="scroll-top"
+      type="button"
+      aria-label="Вернуться к началу"
+      title="Вернуться к началу"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="26"
+        height="26"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M7.5 13.2 L12 8.7 L16.5 13.2"></path>
+      </svg>
+    </button>
+
+    <script is:inline>
+      // свернуть/показать шапку (состояние запоминается) и возврат к началу текста
+      (function () {
+        const root = document.documentElement;
+        const header = document.querySelector('.site-header');
+        const collapse = document.getElementById('header-collapse');
+        const show = document.getElementById('header-show');
+        const toTop = document.getElementById('scroll-top');
+        if (!header) return;
+
+        const apply = () => {
+          const hidden = root.classList.contains('header-hidden');
+          root.style.setProperty('--header-h', hidden ? '0px' : header.offsetHeight + 'px');
+        };
+
+        const setHidden = (hidden) => {
+          root.classList.toggle('header-hidden', hidden);
+          try {
+            localStorage.setItem('header-hidden', hidden ? '1' : '0');
+          } catch (e) {}
+          apply();
+        };
+
+        try {
+          if (localStorage.getItem('header-hidden') === '1') root.classList.add('header-hidden');
+        } catch (e) {}
+
+        apply();
+        addEventListener('resize', apply);
+
+        if (collapse) collapse.addEventListener('click', () => setHidden(true));
+        if (show) show.addEventListener('click', () => setHidden(false));
+        if (toTop)
+          toTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+      })();
     </script>
   </body>
 </html>
