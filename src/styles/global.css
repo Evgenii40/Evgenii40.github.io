@@ -737,11 +737,17 @@ html:not([data-theme='dark']) .astro-code {
   }
 
   .top-nav {
-    gap: 0.9rem;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
   }
 
   .top-nav a {
     font-size: 0.95rem;
+  }
+
+  /* длинные слова/ссылки/код не выталкивают страницу по горизонтали */
+  .content {
+    overflow-wrap: anywhere;
   }
 
   /* переключатель темы — выше, на уровне названия, и от края экрана */
@@ -759,6 +765,7 @@ html:not([data-theme='dark']) .astro-code {
     top: auto;
     transform: none;
     width: 100%;
+    max-width: 18rem;
     order: 3;
     flex-basis: 100%;
   }
@@ -782,6 +789,27 @@ html:not([data-theme='dark']) .astro-code {
 
   html[data-theme='dark'] .theme-switch .knob {
     left: calc(100% - 1.41rem);
+  }
+
+  /* не даём странице статьи уезжать вбок: grid-колонка не должна
+     расширяться под min-content содержимого (код, таблицы, длинные токены) */
+  .page > * {
+    min-width: 0;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+
+  .content table,
+  .content pre {
+    max-width: 100%;
+  }
+
+  /* страховка от горизонтального выезда на телефоне */
+  html,
+  body {
+    overflow-x: clip;
   }
 }
 
@@ -864,6 +892,11 @@ html:not([data-theme='dark']) .astro-code {
     font-size: 0.85rem;
     line-height: 1.6;
     padding: 0.85rem 1rem;
+    /* на телефоне код переносится, а не уезжает вбок */
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    overflow-x: hidden !important;
   }
 
   .cheat-nav {
