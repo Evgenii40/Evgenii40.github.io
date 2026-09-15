@@ -46,11 +46,11 @@ const sections = tagOrder.map((tag) => {
 <div id="cheat-grid">
   {
     sections.map((section) => (
-      <section class="cheat-section" data-tag={section.tag}>
-        <h2 class="cheat-section-title">{section.tag}</h2>
+      <details class="cheat-section" data-tag={section.tag} open>
+        <summary class="cheat-section-title">{section.tag}</summary>
         {section.groups.map((group) => (
-          <div class="cheat-block">
-            <div class="cheat-block-title">{group.name}</div>
+          <details class="cheat-block" open>
+            <summary class="cheat-block-title">{group.name}</summary>
             <div class="cheat-grid">
               {group.items.map((cheat) => (
                 <a class="cheat-card" href={`/cheats/${cheat.id}/`}>
@@ -59,7 +59,7 @@ const sections = tagOrder.map((tag) => {
                 </a>
               ))}
             </div>
-          </div>
+          </details>
         ))}
         {section.ungrouped.length > 0 && (
           <div class="cheat-block">
@@ -73,7 +73,7 @@ const sections = tagOrder.map((tag) => {
             </div>
           </div>
         )}
-      </section>
+      </details>
     ))
   }
 </div>

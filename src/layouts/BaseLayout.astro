@@ -132,8 +132,8 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
               <details class="sidebar-group" open data-group={tag}>
                 <summary>{tag}</summary>
                 {[...byGroup.entries()].map(([group, groupCheats]) => (
-                  <div class="sidebar-block">
-                    {group && <div class="sidebar-subgroup">{group}</div>}
+                  <details class="sidebar-block" open data-block={group}>
+                    {group && <summary class="sidebar-subgroup">{group}</summary>}
                     <ol>
                       {groupCheats.map((cheat) => {
                         const href = `/cheats/${cheat.id}/`;
@@ -146,7 +146,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
                         );
                       })}
                     </ol>
-                  </div>
+                  </details>
                 ))}
               </details>
             ))
@@ -170,6 +170,17 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         if (localStorage.getItem(key) === 'closed') group.open = false;
         group.addEventListener('toggle', () => {
           localStorage.setItem(key, group.open ? 'open' : 'closed');
+        });
+      });
+
+      // запоминаем свёрнутые блоки внутри разделов сайдбара
+      document.querySelectorAll('details.sidebar-block').forEach((block) => {
+        const groupEl = block.closest('details.sidebar-group');
+        const tag = groupEl ? (groupEl.dataset.group ?? '') : '';
+        const key = 'sb-block:' + tag + '|' + (block.dataset.block ?? '');
+        if (localStorage.getItem(key) === 'closed') block.open = false;
+        block.addEventListener('toggle', () => {
+          localStorage.setItem(key, block.open ? 'open' : 'closed');
         });
       });
 
