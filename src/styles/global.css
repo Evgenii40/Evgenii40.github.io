@@ -323,11 +323,19 @@ html[data-theme='dark'] .theme-switch .knob {
   margin-bottom: 0;
 }
 
+/* контейнер списка сайдбара расширяем влево, чтобы выступающая
+   плашка раздела не обрезалась его overflow */
+.sidebar > .cheats-nav {
+  margin-left: -0.6rem;
+  padding-left: 0.6rem;
+}
+
 .sidebar-group > summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+  margin-left: -0.6rem;
   margin-bottom: 0.5rem;
   padding: 0.35rem 0.7rem;
   border-radius: 8px;
@@ -1188,6 +1196,7 @@ html.header-hidden .header-show:hover {
 
 /* блоки в сайдбаре */
 .sidebar-block {
+  margin-left: -0.3rem;
   margin-bottom: 0.85rem;
 }
 
@@ -1196,7 +1205,7 @@ html.header-hidden .header-show:hover {
 }
 
 .sidebar-subgroup {
-  margin: 0.4rem 0 0.2rem 0.6rem;
+  margin: 0.4rem 0 0.2rem 0;
   padding: 0.15rem 0.45rem;
   border-radius: 6px;
   font-size: 0.875rem;
