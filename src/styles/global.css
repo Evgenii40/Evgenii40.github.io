@@ -477,7 +477,7 @@ html:not([data-theme='dark']) .sidebar a.active {
 
 .content h2,
 .content h3 {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: calc(var(--header-h, 5rem) + 5px);
 }
 
 .content h2 {
