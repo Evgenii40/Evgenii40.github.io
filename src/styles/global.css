@@ -1153,3 +1153,50 @@ html.header-hidden .header-show:hover {
   color: var(--accent);
   opacity: 1;
 }
+
+/* ---------- Разделы и блоки шпаргалок ---------- */
+.cheat-section {
+  margin-bottom: 2.5rem;
+}
+
+.content .cheat-section-title {
+  margin: 0 0 1rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.35rem;
+}
+
+.cheat-block {
+  margin-bottom: 1.75rem;
+}
+
+.cheat-block:last-child {
+  margin-bottom: 0;
+}
+
+.cheat-block-title {
+  margin: 0 0 0.75rem;
+  font-size: var(--tag-size);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+/* блоки в сайдбаре */
+.sidebar-block {
+  margin-bottom: 0.85rem;
+}
+
+.sidebar-block:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-subgroup {
+  margin: 0.4rem 0 0.2rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}

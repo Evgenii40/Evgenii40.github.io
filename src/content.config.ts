@@ -9,6 +9,8 @@ const cheats = defineCollection({
     order: z.number(),
     // Категория шпаргалки, например «Интеграция» или «Запросы»
     tag: z.string().optional(),
+    // Блок внутри категории, например «API и сервисы»
+    group: z.string().optional(),
   }),
 });
 

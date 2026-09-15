@@ -19,12 +19,15 @@ const ogImage = new URL('/og.png', Astro.site).href;
 const cheats = (await getCollection('cheats')).sort(
   (a, b) => a.data.order - b.data.order
 );
-// группировка шпаргалок по категории для сайдбара
-const groups = new Map<string, typeof cheats>();
+// группировка шпаргалок для сайдбара: раздел (tag) -> блок (group) -> шпаргалки
+const sections = new Map<string, Map<string, typeof cheats>>();
 for (const cheat of cheats) {
   const tag = cheat.data.tag ?? 'Разное';
-  if (!groups.has(tag)) groups.set(tag, []);
-  groups.get(tag)!.push(cheat);
+  const group = cheat.data.group ?? '';
+  if (!sections.has(tag)) sections.set(tag, new Map());
+  const byGroup = sections.get(tag)!;
+  if (!byGroup.has(group)) byGroup.set(group, []);
+  byGroup.get(group)!.push(cheat);
 }
 const currentPath = Astro.url.pathname.replace(/\/$/, '');
 ---
@@ -125,21 +128,26 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         <details class="cheats-nav" open>
           <summary>Шпаргалки</summary>
           {
-            [...groups.entries()].map(([tag, groupCheats]) => (
+            [...sections.entries()].map(([tag, byGroup]) => (
               <details class="sidebar-group" open data-group={tag}>
                 <summary>{tag}</summary>
-                <ol>
-                  {groupCheats.map((cheat) => {
-                    const href = `/cheats/${cheat.id}/`;
-                    return (
-                      <li>
-                        <a href={href} class={currentPath === href.replace(/\/$/, '') ? 'active' : ''}>
-                          {cheat.data.title}
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ol>
+                {[...byGroup.entries()].map(([group, groupCheats]) => (
+                  <div class="sidebar-block">
+                    {group && <div class="sidebar-subgroup">{group}</div>}
+                    <ol>
+                      {groupCheats.map((cheat) => {
+                        const href = `/cheats/${cheat.id}/`;
+                        return (
+                          <li>
+                            <a href={href} class={currentPath === href.replace(/\/$/, '') ? 'active' : ''}>
+                              {cheat.data.title}
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </div>
+                ))}
               </details>
             ))
           }

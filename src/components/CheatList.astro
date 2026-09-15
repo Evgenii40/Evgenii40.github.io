@@ -5,6 +5,7 @@ interface CheatData {
     title: string;
     description: string;
     tag?: string;
+    group?: string;
   };
 }
 
@@ -13,22 +14,66 @@ interface Props {
 }
 
 const { cheats } = Astro.props;
-const tags = [...new Set(cheats.map((c) => c.data.tag).filter(Boolean))];
+
+// разделы (tag) в порядке появления; внутри — блоки (group)
+const tagOrder: string[] = [];
+for (const c of cheats) {
+  const t = c.data.tag ?? '';
+  if (t && !tagOrder.includes(t)) tagOrder.push(t);
+}
+
+const sections = tagOrder.map((tag) => {
+  const items = cheats.filter((c) => c.data.tag === tag);
+  const groupOrder: string[] = [];
+  for (const c of items) {
+    const g = c.data.group ?? '';
+    if (g && !groupOrder.includes(g)) groupOrder.push(g);
+  }
+  const groups = groupOrder.map((g) => ({
+    name: g,
+    items: items.filter((c) => c.data.group === g),
+  }));
+  const ungrouped = items.filter((c) => !c.data.group);
+  return { tag, groups, ungrouped };
+});
 ---
 
 <div class="cheat-filter" id="cheat-filter">
   <button data-tag="" class="active">Все</button>
-  {tags.map((tag) => <button data-tag={tag}>{tag}</button>)}
+  {tagOrder.map((tag) => <button data-tag={tag}>{tag}</button>)}
 </div>
 
-<div class="cheat-grid" id="cheat-grid">
+<div id="cheat-grid">
   {
-    cheats.map((cheat) => (
-      <a class="cheat-card" data-tag={cheat.data.tag ?? ''} href={`/cheats/${cheat.id}/`}>
-        {cheat.data.tag && <span class="tag">{cheat.data.tag}</span>}
-        <h3>{cheat.data.title}</h3>
-        <p>{cheat.data.description}</p>
-      </a>
+    sections.map((section) => (
+      <section class="cheat-section" data-tag={section.tag}>
+        <h2 class="cheat-section-title">{section.tag}</h2>
+        {section.groups.map((group) => (
+          <div class="cheat-block">
+            <div class="cheat-block-title">{group.name}</div>
+            <div class="cheat-grid">
+              {group.items.map((cheat) => (
+                <a class="cheat-card" href={`/cheats/${cheat.id}/`}>
+                  <h3>{cheat.data.title}</h3>
+                  <p>{cheat.data.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+        {section.ungrouped.length > 0 && (
+          <div class="cheat-block">
+            <div class="cheat-grid">
+              {section.ungrouped.map((cheat) => (
+                <a class="cheat-card" href={`/cheats/${cheat.id}/`}>
+                  <h3>{cheat.data.title}</h3>
+                  <p>{cheat.data.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
     ))
   }
 </div>
@@ -38,7 +83,7 @@ const tags = [...new Set(cheats.map((c) => c.data.tag).filter(Boolean))];
 <script>
   const bar = document.getElementById('cheat-filter')!;
   const empty = document.getElementById('cheat-empty')!;
-  const cards = [...document.querySelectorAll<HTMLElement>('#cheat-grid .cheat-card')];
+  const sections = [...document.querySelectorAll<HTMLElement>('.cheat-section')];
 
   bar.addEventListener('click', (e) => {
     const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-tag]');
@@ -47,9 +92,9 @@ const tags = [...new Set(cheats.map((c) => c.data.tag).filter(Boolean))];
     bar.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === btn));
     const tag = btn.dataset.tag ?? '';
     let visible = 0;
-    for (const card of cards) {
-      const show = tag === '' || card.dataset.tag === tag;
-      card.style.display = show ? '' : 'none';
+    for (const section of sections) {
+      const show = tag === '' || section.dataset.tag === tag;
+      section.style.display = show ? '' : 'none';
       if (show) visible++;
     }
     empty.hidden = visible > 0;

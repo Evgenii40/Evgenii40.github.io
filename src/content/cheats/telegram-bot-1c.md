@@ -2,7 +2,8 @@
 title: "Telegram-бот на 1С"
 description: "Бот, который читает и шлёт сообщения Telegram: вебхук через HTTP-сервис или long polling, отправка через sendMessage."
 order: 4
-tag: Интеграция
+tag: Интеграция
+group: "Боты, очереди, маркетплейсы"
 ---
 
 Минимальный бот на 1С — это два куска: **отправка** (обычный POST на [Telegram API](/glossary/#telegram-api) из кода 1С) и **приём** ([вебхук](/glossary/#webhook) через HTTP-сервис 1С либо long polling из [регламентного задания](/glossary/#reglamentnoe-zadanie)).
