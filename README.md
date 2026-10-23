@@ -46,20 +46,33 @@
 
 ## Публикация
 
-Сайт статический: результат сборки (`pnpm build`) — папка `dist/`, её можно
-положить на любой статик-хостинг. Адрес сайта задаётся в `astro.config.mjs`
-(`site`), от него зависят canonical-ссылки и карта сайта.
+Сайт статический: результат сборки (`pnpm build`) — папка `dist/`. Публикация
+автоматизирована: workflow `.github/workflows/deploy.yml` при каждом push в `main`
+собирает сайт и выкладывает его на **GitHub Pages** (источник Pages — GitHub Actions).
+Адрес сайта задаётся в `astro.config.mjs` (`site`), от него зависят canonical-ссылки
+и карта сайта.
 
-Рекомендуемый вариант — **Cloudflare Pages**:
+Стадия публикации задаётся константой `STAGE` в `src/site.ts`:
 
-1. Pages → Create project → подключить Git-репозиторий `Evgenii40/konfig-hab`.
-2. Build command: `pnpm build`, Build output directory: `dist`, Node: 22.
-3. Custom domains: добавить `konfig-hab.ru` и `www.konfig-hab.ru`.
-4. Прописать DNS-записи, которые предложит Cloudflare (у регистратора домена).
-5. HTTPS включается автоматически.
-6. Добавить сайт в Яндекс.Вебмастер и Google Search Console, указать `sitemap.xml`.
+- `'preview'` — закрытый фидбек: на всех страницах meta `noindex`, `robots.txt` с
+  `Disallow: /`, пустая `sitemap.xml`. Сайт виден только тем, кому дали адрес Pages.
+- `'public'` — открыт для всех: обычные `robots.txt` и `sitemap.xml`.
 
-Альтернативы: Netlify, Vercel, GitHub Pages (везде тот же `dist/`).
+Порядок публичного запуска (фаза 2):
+
+1. Переключить `STAGE` на `'public'` и добавить `public/CNAME` со значением `konfig-hab.ru`.
+2. Прописать DNS у регистратора: для apex-домена A-записи 185.199.108.153,
+   185.199.109.153, 185.199.110.153, 185.199.111.153; для `www` CNAME на
+   `Evgenii40.github.io`.
+3. В настройках Pages включить «Enforce HTTPS» (сертификат выпускается автоматически).
+4. Добавить сайт в Яндекс.Вебмастер и Google Search Console, указать `sitemap.xml`.
+
+Альтернативы: Netlify, Vercel, любой статик-хостинг (везде тот же `dist/`).
+
+## Лицензия
+
+Код — под MIT, содержимое `src/content/` (шпаргалки и глоссарий) — под CC BY-SA 4.0.
+Подробности в файле `LICENSE`.
 
 ## Примечание
 

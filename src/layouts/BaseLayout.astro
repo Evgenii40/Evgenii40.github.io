@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { Font } from 'astro:assets';
+import { STAGE } from '../site';
 import '../styles/global.css';
 
 interface Props {
@@ -45,6 +46,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     <Font cssVariable="--font-mono" preload={[{ subset: 'cyrillic' }, { subset: 'latin' }]} />
     <link rel="canonical" href={canonical} />
     <meta name="description" content={description} />
+    {STAGE === 'preview' && <meta name="robots" content="noindex, nofollow" />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Конфиг Хаб" />
     <meta property="og:title" content={title} />
