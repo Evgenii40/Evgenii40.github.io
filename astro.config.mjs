@@ -3,7 +3,9 @@ import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://konfig-hab.ru',
+  // Фаза 1 (preview): корневой сайт GitHub Pages. Для публичного запуска вернётся
+  // 'https://konfig-hab.ru' (вместе с переименованием репозитория обратно).
+  site: 'https://evgenii40.github.io/',
   devToolbar: { enabled: false },
   fonts: [
     {
