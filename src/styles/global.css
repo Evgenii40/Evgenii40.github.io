@@ -256,6 +256,25 @@ html[data-theme='dark'] .theme-switch .knob {
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
+/* кнопка «Найти» в строке поиска */
+.search-submit {
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.55rem 1rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.search-submit:hover {
+  opacity: 0.85;
+}
+
 .search-results {
   position: absolute;
   top: calc(100% + 0.4rem);
@@ -773,11 +792,15 @@ html:not([data-theme='dark']) .astro-code {
     flex-basis: 100%;
   }
 
-  /* на телефоне поле поиска ниже по высоте и уже, а кнопка «Скрыть меню» — у правого края */
+  /* на телефоне поле поиска ниже по высоте и уже, кнопка «Найти» под него подогнана */
   .site-search input {
     max-width: 18rem;
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
+  }
+
+  .search-submit {
+    padding: 0.4rem 0.8rem;
   }
 
   /* подпись у переключателя темы на телефоне убираем */
@@ -1068,15 +1091,10 @@ html:not([data-theme='dark']) .astro-code {
   font-size: 0.95rem;
 }
 
-/* ---------- Свернуть шапку (кнопка рядом с поиском) ---------- */
+/* ---------- Свернуть шапку (кнопка в меню перед «Главная») ---------- */
 .header-collapse {
   flex-shrink: 0;
-  margin-left: auto;
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 0.85rem;
+  padding: 0.3rem 0.7rem;
   border: 1.5px solid var(--text-muted);
   border-radius: 10px;
   background: var(--bg);

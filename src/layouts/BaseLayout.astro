@@ -103,6 +103,18 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           aria-label="Поиск по шпаргалкам"
         />
         <button
+          class="search-submit"
+          id="site-search-submit"
+          type="button"
+          aria-label="Найти"
+          title="Найти"
+        >
+          Найти
+        </button>
+        <div class="search-results" id="search-results" hidden></div>
+      </div>
+      <nav class="top-nav">
+        <button
           class="header-collapse"
           id="header-collapse"
           type="button"
@@ -111,9 +123,6 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         >
           Скрыть меню
         </button>
-        <div class="search-results" id="search-results" hidden></div>
-      </div>
-      <nav class="top-nav">
         <a href="/" class={currentPath === '' ? 'active' : ''}>Главная</a>
         <a href="/cheats/" class={currentPath === '/cheats' ? 'active' : ''}>Все шпаргалки</a>
         <a href="/glossary/" class={currentPath === '/glossary' ? 'active' : ''}>Глоссарий</a>
@@ -257,7 +266,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           box.hidden = false;
         };
 
-        input.addEventListener('input', async () => {
+        const doSearch = async () => {
           if (!index) {
             try {
               index = await (await fetch('/search.json')).json();
@@ -266,7 +275,12 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
             }
           }
           render(input.value.trim());
-        });
+        };
+
+        input.addEventListener('input', doSearch);
+
+        const submit = document.getElementById('site-search-submit');
+        if (submit) submit.addEventListener('click', doSearch);
 
         input.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
