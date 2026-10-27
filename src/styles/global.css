@@ -901,7 +901,8 @@ html:not([data-theme='dark']) .astro-code {
   .content pre {
     font-size: 0.85rem;
     line-height: 1.6;
-    padding: 0.85rem 1rem;
+    /* сверху оставляем полосу под кнопку «Копировать» (2.6rem), как в базовом правиле */
+    padding: 2.6rem 1rem 0.85rem;
     /* на телефоне код переносится, а не уезжает вбок */
     white-space: pre-wrap;
     overflow-wrap: anywhere;
