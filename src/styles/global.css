@@ -498,7 +498,7 @@ html:not([data-theme='dark']) .sidebar a.active {
   position: relative;
   background: var(--code-bg);
   font-family: var(--font-mono), Consolas, monospace;
-  padding: 1rem 1.25rem;
+  padding: 2.6rem 1.25rem 1rem;
   border-radius: 10px;
   overflow-x: auto;
   font-size: 0.9rem;
@@ -532,34 +532,21 @@ html:not([data-theme='dark']) .astro-code {
 
 .copy-btn {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.55rem;
+  right: 0.75rem;
   border: 1px solid rgba(232, 224, 213, 0.25);
   background: rgba(27, 21, 17, 0.85);
   color: #b3a695;
   font: inherit;
   font-size: 0.75rem;
-  padding: 0.2rem 0.6rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 6px;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s, color 0.15s;
-}
-
-.content pre:hover .copy-btn,
-.copy-btn:focus-visible {
-  opacity: 1;
+  transition: color 0.15s;
 }
 
 .copy-btn:hover {
   color: #ece4d8;
-}
-
-/* на тач-устройствах hover нет — кнопку показываем всегда */
-@media (hover: none) {
-  .copy-btn {
-    opacity: 1;
-  }
 }
 
 .content code:not(pre code) {
