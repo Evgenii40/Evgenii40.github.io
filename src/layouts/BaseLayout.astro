@@ -63,9 +63,20 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     <meta name="twitter:image" content={ogImage} />
     <title>{title}</title>
     <script is:inline>
-      // применяем тему до первой отрисовки, чтобы не мигало
+      // применяем тему до первой отрисовки, чтобы не мигало;
+      // читаем из localStorage, затем из cookie (приватность телефонов чистит хранилище),
+      // и только потом — системная тема
+      const readTheme = () => {
+        try {
+          const v = localStorage.getItem('theme');
+          if (v === 'dark' || v === 'light') return v;
+        } catch (e) {}
+        const m = document.cookie.match(/(?:^|;\s*)theme=(dark|light)/);
+        if (m) return m[1];
+        return null;
+      };
       const saved =
-        localStorage.getItem('theme') ||
+        readTheme() ||
         (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.dataset.theme = saved;
       const themeColor = document.getElementById('theme-color');
@@ -297,7 +308,11 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         const next =
           document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = next;
-        localStorage.setItem('theme', next);
+        // пишем и в хранилище, и в cookie: на телефонах приватность
+        // может чистить localStorage, а cookie первой стороны выживает
+        try { localStorage.setItem('theme', next); } catch (e) {}
+        document.cookie =
+          'theme=' + next + ';path=/;max-age=31536000;samesite=lax';
         const themeColor = document.getElementById('theme-color');
         if (themeColor) themeColor.content = next === 'dark' ? '#0f0c0a' : '#f7f6f3';
         syncState();
